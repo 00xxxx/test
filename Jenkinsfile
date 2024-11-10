@@ -1,15 +1,5 @@
 pipeline {
     agent any
-    stages {
-        stage('Example') {
-            steps {
-                echo 'Hello, Jenkins!'
-            }
-        }
-    }
-}
-pipeline {
-    agent any
 
     stages {
         stage('Checkout') {
