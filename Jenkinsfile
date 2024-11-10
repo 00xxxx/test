@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        git 'Default'  // 여기에 설정한 이름과 일치하도록 수정합니다.
+    }
 
     stages {
         stage('Checkout') {
