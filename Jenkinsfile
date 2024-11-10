@@ -1,17 +1,20 @@
 pipeline {
     agent any
     tools {
-        git 'Default'  // 여기에 설정한 이름과 일치하도록 수정합니다.
+        git 'Default' // Jenkins에서 설정한 Git 이름과 일치하도록 수정
     }
-
     stages {
         stage('Checkout') {
             steps {
-                // GitHub 리포지토리에서 코드 가져오기
-                checkout scm
+                checkout scm // Git 레포지토리에서 코드 체크아웃
             }
         }
-
+        stage('Build') {
+            steps {
+                echo 'Build Stage'
+            }
+        }
+        // 추가적인 스테이지들...
         stage('Dependency Check') {
             steps {
                 dependencyCheck additionalArguments: '--scan .',
