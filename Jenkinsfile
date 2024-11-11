@@ -1,32 +1,32 @@
 pipeline {
     agent any
-    tools {
-        git 'Default' // Jenkins에서 설정한 Git 이름과 일치하도록 수정
-    }
+
     stages {
         stage('Checkout') {
             steps {
-                checkout scm // Git 레포지토리에서 코드 체크아웃
+                git 'https://github.com/your-username/your-repository.git'
             }
         }
-        stage('Build') {
+        stage('PMD Analysis') {
             steps {
-                echo 'Build Stage'
+                pmd canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/src/**/*.java', unstable: '', thresholdLimit: 'normal'
             }
         }
-        // 추가적인 스테이지들...
-        stage('Dependency Check') {
+        stage('SpotBugs Analysis') {
             steps {
-                dependencyCheck additionalArguments: '--scan .',
-                                odcInstallation: 'Default' // Jenkins에 구성된 Dependency-Check 설치 이름
+                spotbugs pattern: '**/target/spotbugsXml.xml', effort: 'Max', reportLevel: 'Low'
             }
         }
-
-        stage('Results') {
+        stage('FindSecurityBugs Analysis') {
             steps {
-                // Dependency-Check 결과 보기 (보고서를 콘솔에 출력하거나 파일로 확인)
-                echo 'Dependency-Check analysis complete. Review the results for potential vulnerabilities.'
+                findbugsPattern: '**/target/findbugsXml.xml', pattern: '**/target/findsecbugsXml.xml'
             }
+        }
+    }
+    post {
+        always {
+            // 분석 결과 보고
+            recordIssues enabledForFailure: true, tools: [pmd(), spotBugs(), findSecurityBugs()]
         }
     }
 }
