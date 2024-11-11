@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/your-username/your-repository.git'
+                git 'https://github.com/00xxxx/test.git'
             }
         }
         stage('PMD Analysis') {
@@ -19,7 +19,7 @@ pipeline {
         }
         stage('FindSecurityBugs Analysis') {
             steps {
-                findbugsPattern: '**/target/findbugsXml.xml', pattern: '**/target/findsecbugsXml.xml'
+                findSecurityBugs pattern: '**/target/findsecbugsXml.xml'
             }
         }
     }
